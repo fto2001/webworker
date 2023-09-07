@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Timer</h1>
+    <div class="timer"></div>
+
+    <script type="module">
+        const worker = new Worker('index.js');
+
+        worker.addEventListener('message', (e) => {
+            const { hours, minutes, seconds } = e.data;
+            const timerElement = document.getElementsByClassName('timer')[0];
+            timerElement.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        });
+
+        worker.postMessage({ command: 'start', delay: 1000 });
+    </script>
+</body>
+</html>
